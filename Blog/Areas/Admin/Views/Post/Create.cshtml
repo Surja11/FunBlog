@@ -1,0 +1,63 @@
+﻿@model Blog.ViewModels.CreatePostVM
+
+@{
+    ViewData["Title"] = "Create Post";
+}
+
+<div class="container-fluid">
+    <a class="btn btn-primary mb-2" asp-action="Index" asp-controller="Post">Go back</a>
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="card-title text-white">New Post</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" asp-controller="Post" asp-area="Admin" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-9">
+                        <div class="mb-2">
+                            <label>Title</label>
+                            <input type="text" asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-2">
+                            <label>Short Description</label>
+                            <input type="text" asp-for="ShortDescription" class="form-control" />
+                            <span asp-validation-for="ShortDescription" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-2">
+                            <label>Description</label>
+                            <textarea asp-for="Description" rows="8" class="form-control"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-3">
+                        <div class="mb-2">
+                            <img src="~/Thumbnail/images.png" class="img-fluid" id="thumbnailPreview" />
+                        </div>
+                        <div class="mb-2">
+                            <label>Thumbnail</label>
+                            <input type="file" class="form-control" asp-for="Thumbnail" id="thumbnailInput" />
+                            <span asp-validation-for="Thumbnail" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <button type="submit" class="btn btn-primary w-100">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $("#thumbnailInput").on("change", function(){
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                document.getElementById("thumbnailPreview").src = window.URL.createObjectURL(this.files[0])
+        });
+    </script>
+}
