@@ -98,7 +98,6 @@ namespace Blog.Areas.Admin.Controllers
             _notification.Success("Post created Successfully");
             return RedirectToAction("Index");
 
-
             return View();
 
         }
