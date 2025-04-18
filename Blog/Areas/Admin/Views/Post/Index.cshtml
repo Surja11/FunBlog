@@ -1,5 +1,5 @@
 ﻿
-
+@model List<Blog.ViewModels.PostVM>
 
 @{
     ViewData["Title"] = "Lists of Posts";
@@ -10,9 +10,53 @@
     <a class="btn btn-primary mb-2" asp-action="Create" asp-controller="Post" asp-area="Admin" >Add Post</a>
     <div class=" card ">
         <div class="card-header bg-primary">
-        <h4 class="card-title text-white">List of Posts</h4>
-       
+            <h4 class="card-title text-white">List of Posts</h4>
+
         </div>
-        <div class="card-body"></div>
+        <div class="card-body container-f" style="background-color: #98c1d9">
+
+            @foreach(var post in Model){
+                <div class="rounded mb-4 p-2" style="background-color:#e0fbfc" >
+                    <div class="row">
+
+                        <div class="col-2 d-flex justify-content-center flex-column">
+                            @if (post.ThumbnailUrl == "") {
+                                <img class="img-fluid" src="~/Thumbnail/images.png" alt="Alternate Text" height="120px" width="150px" style="object-fit:fill" />
+                            }
+
+
+                            else {
+                                <img class="img-fluid" src="~/Thumbnail/@post.ThumbnailUrl" alt="Alternate Text" height="120px" width="150px" style="object-fit:fill" />
+                            }
+                        </div>
+
+                        <div class="col-5 d-flex justify-content-center flex-column">
+                            <h4>@post.Title</h4>
+                            <p>@post.CreatedDate</p>
+                        </div>
+
+                        <div class="col-5 text-right d-flex justify-content-center flex-column">
+                            <h4 class="fw-bold">@post.AuthorName</h4>
+                            <p>
+                                <a class="btn btn-primary" >Edit</a>
+                                <form method="post" asp-action="Delete" asp-controller="Post" asp-area="Admin" asp-route-id="@post.Id">
+
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                                
+
+                            </p>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+
+        }
+           
+        </div>
     </div>
 </div>

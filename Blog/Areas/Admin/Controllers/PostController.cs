@@ -77,7 +77,7 @@ namespace Blog.Areas.Admin.Controllers
             post.Description = vm.Description;  
             post.Title = vm.Title;  
             post.ShortDescription = vm.ShortDescription;
-            post.ApplicatonUserId = loggedInUser!.Id;
+            post.ApplicationUserId = loggedInUser!.Id;
             
 
             if (post.Title!= null)
@@ -97,10 +97,27 @@ namespace Blog.Areas.Admin.Controllers
             await _context.SaveChangesAsync();
             _notification.Success("Post created Successfully");
             return RedirectToAction("Index");
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var post = await _context.Posts.FirstOrDefaultAsync(x => x.Id == id);
+            var loggedInUser = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == User.Identity!.Name);
+            var loggedInUserRole = await _userManager.GetRolesAsync(loggedInUser!);
+
+            if (loggedInUserRole[0] == WebsiteRoles.WebsiteAdmin || loggedInUser?.Id == post?.ApplicationUserId) {
+               _context.Posts!.Remove(post);
+                await _context.SaveChangesAsync();
+                _notification.Success("Post deleted Successfully");
+            return RedirectToAction("Index", "Post", new {area="Admin"});
+
+            }
             return View();
 
         }
+
+
         private string UploadImage(IFormFile file)
         {
             string uniqueFileName = "";

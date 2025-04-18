@@ -152,7 +152,6 @@ namespace Blog.Areas.Admin.Controllers
                 {
                     await _userManager.AddToRoleAsync(applicationUser, WebsiteRoles.WebsiteAuthor);
                 }
-
                 _notification.Success("User registered successfully");
                 return RedirectToAction("Index", "Post", new { area = "Admin" });
             }
